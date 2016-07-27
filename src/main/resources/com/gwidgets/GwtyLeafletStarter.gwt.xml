@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='GwtyLeafletStarter'>
+  <inherits name='com.google.gwt.user.User' /> 
+   <inherits name='com.gwidgets.api.GwtyLeaflet' />                        -->
+  <entry-point class='com.gwidgets.leaflet.client.GwtyLeafletStarter' />
+
+  <source path='leaflet' />
+
+</module>

@@ -1,0 +1,25 @@
+html, body {
+  margin: 0;
+  padding:0;
+}
+
+body {
+display: flex;
+flex-direction : column;
+align-items: center;
+justify-content: center;	
+}
+
+#map {
+height:400px;
+width:100%;
+max-width: 500px;
+margin-top: 7%;		
+}
+
+#mapInfo{
+	position: absolute;
+    align-self: baseline;
+    top: 50%;
+    left: 2%;
+}
