@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.shared.GWT;
 import com.gwidgets.api.leaflet.Circle;
 import com.gwidgets.api.leaflet.L;
 import com.gwidgets.api.leaflet.LatLng;
@@ -12,6 +13,7 @@ import com.gwidgets.api.leaflet.Map;
 import com.gwidgets.api.leaflet.Polygon;
 import com.gwidgets.api.leaflet.Rectangle;
 import com.gwidgets.api.leaflet.elemental.Function;
+import com.gwidgets.api.leaflet.options.MapOptions;
 import com.gwidgets.api.leaflet.options.PathOptions;
 import com.gwidgets.api.leaflet.options.PolylineOptions;
 import com.gwidgets.api.leaflet.options.PopupOptions;
@@ -29,21 +31,27 @@ public class GwtyLeafletStarter implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		// We do not make use of options, so they are set null for now;
-		final Map map = L.map("map", null);
+		MapOptions options = new MapOptions.Builder(L.latLng(52.51, 13.40), 12, 12)
+				                 .dragging(false)
+				                 .build();
+	
+		
+		final Map map = L.map("map", options);
+		
+		GWT.log(options.getZoom()+"");
 
 		L.tileLayer(MAP_URL, null).addTo(map);
-
-		map.setView(L.latLng(52.51, 13.40), 12, null);
-
-		// click event
+		
 
 		map.on("click", new Function() {
 			@Override
 			public JavaScriptObject call(JavaScriptObject event) {
 				if (firstClickFlag) {
-					PopupOptions options = new PopupOptions();
-					options.zoomAnimation = false;
+					PopupOptions options = new PopupOptions.Builder()
+							               .zoomAnimation(false)
+							               .build();
+							                
+					
 
 					map.openPopup("Hello, Welcome to Berlin!", L.latLng(52.51, 13.40), options);
 					firstClickFlag = false;
@@ -53,9 +61,10 @@ public class GwtyLeafletStarter implements EntryPoint {
 			}
 		});
 
-		PathOptions circleOptions = new PathOptions();
-		circleOptions.fillColor = "#b35d20";
-		circleOptions.color = "#f54e02";
+		PathOptions circleOptions = new PathOptions.Builder()
+				                    .fillColor("#b35d20")
+				                    .color("#f54e02")
+				                     .build();
 		
 		//creating a circle as Leaflet Js: L.circle
 
@@ -64,9 +73,10 @@ public class GwtyLeafletStarter implements EntryPoint {
 
 		circle.bindPopup("This area has cheap rent", null);
 
-		PathOptions rectangleOptions = new PathOptions();
-		rectangleOptions.fillColor = "#ddea09";
-		rectangleOptions.color = "#ffff00";
+		PathOptions rectangleOptions = new PathOptions.Builder()
+				                           .fillColor("#ddea09")
+				                          .color("#ffff00")
+				                          .build();
 
 		//creating a circle as Leaflet Js: L.rectangle
 		Rectangle rectangle = L.rectangle(L.latLngBounds(L.latLng(52.50, 13.40), L.latLng(52.51, 13.42)),
@@ -88,9 +98,10 @@ public class GwtyLeafletStarter implements EntryPoint {
 
 		LatLng[] coordinatesArray = (LatLng[]) coordinates.toArray();
 
-		PolylineOptions polygonOptions = new PolylineOptions();
-		polygonOptions.fillColor = "#008000";
-		polygonOptions.color = "#1d921d";
+		PolylineOptions polygonOptions = new PolylineOptions.Builder()
+				                         .fillColor("#008000")
+				                         .color("#1d921d")
+				                         .build();
 
 		Polygon tiergartenPolygon = L.polygon(coordinatesArray, polygonOptions);
 

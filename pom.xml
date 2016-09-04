@@ -11,37 +11,39 @@
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.8.0-beta1</gwtVersion>
+		<gwtVersion>2.8.0-rc2</gwtVersion>
 
 		<!-- GWT needs at least java 1.7 -->
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt</artifactId>
-				<version>${gwtVersion}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
+			<version>${gwtVersion}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwtVersion}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>apache-jsp</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.gwidgets</groupId>
 			<artifactId>gwty-leaflet</artifactId>
-			<version>0.2</version>
+			<version>0.4-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -56,7 +58,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.8.0-beta1</version>
+				<version>2.8.0-rc2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -73,16 +75,13 @@
 						<module>com.gwidgets.GwtyLeafletStarter</module>
 					</modules>
 					<draftCompile>true</draftCompile>
+					<launcherDir>${project.build.directory}/${project.build.finalName}</launcherDir>
+					<style>PRETTY</style>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-maven-plugin</artifactId>
-				<version>1.9.40</version>
-				<configuration>
-					<enableJarClasses>false</enableJarClasses>
-				</configuration>
-			</plugin>
+			<!-- <plugin> <groupId>com.google.appengine</groupId> <artifactId>appengine-maven-plugin</artifactId> 
+				<version>1.9.40</version> <configuration> <enableJarClasses>false</enableJarClasses> 
+				</configuration> </plugin> -->
 		</plugins>
 	</build>
 
