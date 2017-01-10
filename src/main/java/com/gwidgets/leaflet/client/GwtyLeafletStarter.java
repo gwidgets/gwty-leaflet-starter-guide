@@ -6,17 +6,24 @@ import java.util.List;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.gwidgets.api.leaflet.Circle;
 import com.gwidgets.api.leaflet.L;
 import com.gwidgets.api.leaflet.LatLng;
 import com.gwidgets.api.leaflet.Map;
 import com.gwidgets.api.leaflet.Polygon;
 import com.gwidgets.api.leaflet.Rectangle;
+import com.gwidgets.api.leaflet.elemental.Document;
 import com.gwidgets.api.leaflet.elemental.Function;
+import com.gwidgets.api.leaflet.elemental.HTMLElement;
+import com.gwidgets.api.leaflet.events.EventTypes;
 import com.gwidgets.api.leaflet.options.MapOptions;
 import com.gwidgets.api.leaflet.options.PathOptions;
 import com.gwidgets.api.leaflet.options.PolylineOptions;
 import com.gwidgets.api.leaflet.options.PopupOptions;
+import com.gwidgets.api.leaflet.options.TooltipOptions;
+import com.gwidgets.api.leaflet.utils.LeafletResources;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -30,29 +37,32 @@ public class GwtyLeafletStarter implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-
-		MapOptions options = new MapOptions.Builder(L.latLng(52.51, 13.40), 12, 12)
-				                 .dragging(false)
-				                 .build();
-	
+		
+		
+		LeafletResources.whenReady(
+				e -> 
+		             {
+		            	 
+		//Map options required values: center point, zoom, and a min zoom 
+	    MapOptions options = new MapOptions.Builder(L.latLng(52.51, 13.40), 12, 12).dragging(false).build();
 		
 		final Map map = L.map("map", options);
+		
 		
 		GWT.log(options.getZoom()+"");
 
 		L.tileLayer(MAP_URL, null).addTo(map);
 		
 
-		map.on("click", new Function() {
+		map.on(EventTypes.Map.CLICK, new Function() {
 			@Override
 			public JavaScriptObject call(JavaScriptObject event) {
+				
+				
 				if (firstClickFlag) {
 					PopupOptions options = new PopupOptions.Builder()
 							               .zoomAnimation(false)
 							               .build();
-							                
-					
-
 					map.openPopup("Hello, Welcome to Berlin!", L.latLng(52.51, 13.40), options);
 					firstClickFlag = false;
 				}
@@ -68,13 +78,15 @@ public class GwtyLeafletStarter implements EntryPoint {
 		
 		//creating a circle as Leaflet Js: L.circle
 
-		Circle circle = L.circle(L.latLng(52.53, 13.33), 500, circleOptions);
+		Circle circle = L.circle(L.latLng(52.53, 13.33), 1000, circleOptions);
 		circle.addTo(map);
+		
+		
 
 		circle.bindPopup("This area has cheap rent", null);
 
 		PathOptions rectangleOptions = new PathOptions.Builder()
-				                           .fillColor("#ddea09")
+				                          .fillColor("#ddea09")
 				                          .color("#ffff00")
 				                          .build();
 
@@ -85,6 +97,7 @@ public class GwtyLeafletStarter implements EntryPoint {
 		rectangle.addTo(map);
 
 		rectangle.bindPopup("This area has good restaurants", null);
+		rectangle.bindTooltip("kreuzberg", null);
 		
 		//Polygon coordinates
 
@@ -108,9 +121,14 @@ public class GwtyLeafletStarter implements EntryPoint {
 		tiergartenPolygon.addTo(map);
 
 		tiergartenPolygon.bindPopup("This is Tiergarten: one of the best parks in Berlin", null);
-
-
-
+		tiergartenPolygon.bindTooltip("park", null);
+		
+		            	 return null;});
+		
+		
+		
+		
+		
 	}
 
 }
