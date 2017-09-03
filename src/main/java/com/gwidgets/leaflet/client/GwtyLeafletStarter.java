@@ -41,12 +41,12 @@ public class GwtyLeafletStarter implements EntryPoint {
 		             {	 
 		//Map options required values: center point, zoom, and a min zoom 
 	    MapOptions options = new MapOptions.Builder(L.latLng(52.485611, 13.416460), 11.0, 10.0)
-	    		                       .maxZoom(400.0).build();
+	    		                       .maxZoom(17.0).build();
 		
 		final Map map = L.map("map", options);
 			
-		//TileLayerOptions tloptions = new TileLayerOptions.Builder().minZoom(1).maxZoom(17).build();
-		L.tileLayer(MAP_URL, null).addTo(map);	
+		TileLayerOptions tloptions = new TileLayerOptions.Builder().minZoom(1).maxZoom(17).build();
+		L.tileLayer(MAP_URL, tloptions).addTo(map);	
 
 		map.on(EventTypes.MapEvents.CLICK, new EventCallback<MouseEvent>() {
 			@Override
@@ -74,7 +74,7 @@ public class GwtyLeafletStarter implements EntryPoint {
 		CircleOptions circleOptions = new CircleOptions.Builder()
 				                    .fillColor("#b35d20")
 				                    .color("#f54e02")
-				                    .radius(500)
+				                    .radius(500.0)
 				                     .build();
 		
 		//creating a circle as Leaflet Js: L.circle
