@@ -2,6 +2,9 @@
 
 This project is a demonstration of gwty-leaflet. It shows a map with Berlin boroughs.
 
+## How to run 
+
+`mvn package gwt:run`
 
 ##Live Demo
 

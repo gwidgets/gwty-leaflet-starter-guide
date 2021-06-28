@@ -16,12 +16,21 @@ import com.gwidgets.api.leaflet.events.EventCallback;
 import com.gwidgets.api.leaflet.events.EventTypes;
 import com.gwidgets.api.leaflet.events.MouseEvent;
 import com.gwidgets.api.leaflet.options.CircleOptions;
+import com.gwidgets.api.leaflet.options.GeoJSONOptions;
+import com.gwidgets.api.leaflet.options.IconOptions;
 import com.gwidgets.api.leaflet.options.MapOptions;
+import com.gwidgets.api.leaflet.options.MarkerOptions;
 import com.gwidgets.api.leaflet.options.PathOptions;
 import com.gwidgets.api.leaflet.options.PolylineOptions;
 import com.gwidgets.api.leaflet.options.PopupOptions;
 import com.gwidgets.api.leaflet.options.TileLayerOptions;
 import com.gwidgets.api.leaflet.utils.LeafletResources;
+
+import elemental2.core.JsObject;
+import jsinterop.annotations.JsProperty;
+import jsinterop.annotations.JsType;
+
+import static jsinterop.annotations.JsPackage.GLOBAL;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -126,8 +135,55 @@ public class GwtyLeafletStarter implements EntryPoint {
 
 		tiergartenPolygon.bindPopup("This is Tiergarten: one of the best parks in Berlin", null);
 		tiergartenPolygon.bindTooltip("park", null);
-		
-		            	 return null;}
-				);
+
+     MyGeoJsonData gsonData = new MyGeoJsonData();
+     gsonData.type = "Feature";
+
+     MyGeoJsonData.Properties properties = new MyGeoJsonData.Properties();
+
+     MyGeoJsonData.Geometry geometry = new MyGeoJsonData.Geometry();
+     geometry.type = "Point";
+     geometry.coordinates = new double[]{13.3721, 52.510945};
+
+     gsonData.geometry = geometry;
+     gsonData.properties = properties;
+
+     GeoJSONOptions geoJsonOptions = new GeoJSONOptions();
+     geoJsonOptions.pointToLayer = (feature, latLng) -> {
+       MarkerOptions mkOptions = new MarkerOptions.Builder().icon(
+           L.icon(new IconOptions.Builder("cc-logo-black.png").iconSize(L.point(35, 35, true)).build()))
+           .build();
+       return L.marker(L.latLng(52.485611, 13.416460), mkOptions);
+     };
+     geoJsonOptions.style = (feature) -> {
+
+       Style style = new Style();
+       style.color = "#808080";
+       style.width = "4px";
+
+       return style;
+     };
+
+       geoJsonOptions.onEachFeature = (feature, layer) -> {
+
+         layer.bindPopup("There we go",
+             new PopupOptions.Builder().keepInView(true).maxHeight(50.0).build());
+
+         return null;
+       };
+
+       L.geoJSON(gsonData, geoJsonOptions).addTo(map);
+
+       return null;
+     });
+	}
+
+	@JsType(isNative=true, namespace=GLOBAL, name="Object")
+	static class Style extends JsObject{
+		@JsProperty
+		String color;
+		@JsProperty
+		String width;
+
 	}
 }
