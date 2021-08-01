@@ -28,7 +28,7 @@ public class MyGeoJsonData extends JsObject {
     String type;
 
     @JsProperty
-    double[] coordinates;
+    double[][][] coordinates;
 
     protected Geometry() {
     }

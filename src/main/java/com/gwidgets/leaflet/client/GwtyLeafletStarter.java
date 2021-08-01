@@ -142,8 +142,8 @@ public class GwtyLeafletStarter implements EntryPoint {
      MyGeoJsonData.Properties properties = new MyGeoJsonData.Properties();
 
      MyGeoJsonData.Geometry geometry = new MyGeoJsonData.Geometry();
-     geometry.type = "Point";
-     geometry.coordinates = new double[]{13.3721, 52.510945};
+     geometry.type = "MultiLineString";
+     geometry.coordinates = new double[][][]{new double[][]{new double[]{13.3721, 52.51094}, new double[]{14.3721, 51.51094}}, new double[][]{new double[]{13.2222, 52.4908}, new double[]{13.2254, 52.1111}}, new double[][]{new double[]{12.9898, 53.1563}, new double[]{12.8655, 51.5109}}};
 
      gsonData.geometry = geometry;
      gsonData.properties = properties;
@@ -158,7 +158,7 @@ public class GwtyLeafletStarter implements EntryPoint {
      geoJsonOptions.style = (feature) -> {
 
        Style style = new Style();
-       style.color = "#808080";
+       style.color = "orange";
        style.width = "4px";
 
        return style;
